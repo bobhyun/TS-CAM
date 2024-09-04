@@ -6,6 +6,13 @@ TS-CAM은 ONVIF 호환 CCTV 카메라를 차량 번호 인식 용으로 사용�
 
 카메라와 응용프로그램 사이에서 중계자 역할을 수행하는 서버(브로커)로 동작하며, 응용 프로그램과는 Socket.IO 기반 API를 사용하여 실시간 메시지로 가볍게 통신합니다.
 
+응용 프로그램 예제 코드를 확인해 보세요.
+
+- [Python](https://github.com/bobhyun/TS-CAM/blob/main/examples/python/tscamApp.py)
+- [Java](https://github.com/bobhyun/TS-CAM/blob/main/examples/java/tscamApp/src/Main.java)
+- [C#](https://github.com/bobhyun/TS-CAM/blob/main/examples/csharp/tscamApp/tscamApp/Program.cs)
+- [Node.js](https://github.com/bobhyun/TS-CAM/blob/main/examples/nodejs/index.js)
+
 ```mermaid
 ---
 title: "[구성도]"
@@ -104,10 +111,12 @@ linkStyle 4 stroke:green, stroke-width:4px;
     tsanpr.dll             # TS-ANPR 엔진 파일
     tsanpr-KR-2407M.eon    # TS-ANPR 엔진 파일
    ```
+
 2. 환경변수
    환경변수 설정을 통해 `tscam.exe` 동작을 설정할 수 있습니다.
    환경변수는 서비스 등록시 스크립트 파일에서 설정하거나 간단히 `.env` 파일에 설정할 수 있습니다.
    `.env` 파일은 항상 `tscam.exe` 파일과 같은 디렉토리에 위치해야 합니다.
+
    ```sh
      TSCAM_HTTP_PORT=10000                    # listen용 TCP 포트 번호
      #TSCAM_DATA_DIR=C:\Users\bob\tscam\data  # 스냅샷 이미지가 저장될 디렉토리
@@ -125,14 +134,14 @@ linkStyle 4 stroke:green, stroke-width:4px;
      # 로그 파일 설정 (기본값)
      #	maxSize: 로그 파일 하나의 최대 크기
      # 	maxFiles: 보관할 로그 파일 수 (지정한 날짜가 지나면 자동 삭제됨)
-     # 	size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)  
+     # 	size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)
      # TSCAM_LOG_CONFIG={"maxSize":"20m","maxFiles":"31d","size":"1024m"}
 
      # 파일 저장 로그 레벨 (info, warn, error 중 하나로 설정)
      TSCAM_LOG_LEVEL_FILE=info        # 모든 로그 저장
      # 콘솔 출력 로그 레벨 (info, warn, error 중 하나로 설정)
      TSCAM_LOG_LEVEL_CONSOLE=info     # 모든 로그 출력
-     ```
+   ```
 
 3. 개발 환경
    개발 환경은 동작 상황이 실시간으로 콘솔에 표시되도록 구성하면 편리합니다.
@@ -173,71 +182,73 @@ linkStyle 4 stroke:green, stroke-width:4px;
 
 4. 운영 환경 (윈도우즈)
    운영 환경은 회복 탄력성을 위해 시스템 서비스로 실행합니다.
+
    - 서비스 등록
-   먼저 `tscam`과 `TS-ANPR` 디렉토리를 원하는 위치에 복사한 다음, 시스템 서비스로 등록하기 위해 `utils/windows-service/addsvc.bat` 파일 내용 중 필요한 부분을 수정합니다.
-   예를 들어, `C:\Program Files\TS-Solution\TS-ANPR\`에 복사했다면 아래와 같이 수정하면 됩니다.
+     먼저 `tscam`과 `TS-ANPR` 디렉토리를 원하는 위치에 복사한 다음, 시스템 서비스로 등록하기 위해 `utils/windows-service/addsvc.bat` 파일 내용 중 필요한 부분을 수정합니다.
+     예를 들어, `C:\Program Files\TS-Solution\TS-ANPR\`에 복사했다면 아래와 같이 수정하면 됩니다.
 
-      ```batch
-      @echo off
+     ```batch
+     @echo off
 
-      REM tscam 서비스 설치 스크립트
+     REM tscam 서비스 설치 스크립트
 
-      REM 관리자 모드로 실행하세요.
+     REM 관리자 모드로 실행하세요.
 
-      reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set NSSM=win32\nssm.exe || set NSSM=win64\nssm.exe
+     reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set NSSM=win32\nssm.exe || set NSSM=win64\nssm.exe
 
-      REM 실제 실행파일의 경로로 수정하세요.
-      %NSSM% install tscam "C:\Program Files\TS-Solution\TS-ANPR\tsanpr-KR-v2.4.0M\windowns-x86_64\tscam.exe"
-      %NSSM% set tscam AppExit Default Restart
-      %NSSM% set tscam AppRestartDelay 3000
+     REM 실제 실행파일의 경로로 수정하세요.
+     %NSSM% install tscam "C:\Program Files\TS-Solution\TS-ANPR\tsanpr-KR-v2.4.0M\windowns-x86_64\tscam.exe"
+     %NSSM% set tscam AppExit Default Restart
+     %NSSM% set tscam AppRestartDelay 3000
 
-      REM 필요한 환경변수 설정
-      REM HTTP 포트 번호
-      REM %NSSM% set tscam AppEnvironment TSCAM_HTTP_PORT=10000
+     REM 필요한 환경변수 설정
+     REM HTTP 포트 번호
+     REM %NSSM% set tscam AppEnvironment TSCAM_HTTP_PORT=10000
 
-      REM 데이터 저장 디렉토리
-      REM %NSSM% set tscam AppEnvironment "TSCAM_DATA_DIR=C:\ProgramData\TS-Solution\tscam\data"
+     REM 데이터 저장 디렉토리
+     REM %NSSM% set tscam AppEnvironment "TSCAM_DATA_DIR=C:\ProgramData\TS-Solution\tscam\data"
 
-      REM 로그 파일 디렉토리
-      REM %NSSM% set tscam AppEnvironment "TSCAM_LOG_DIR=C:\ProgramData\TS-Solution\tscam\log"
+     REM 로그 파일 디렉토리
+     REM %NSSM% set tscam AppEnvironment "TSCAM_LOG_DIR=C:\ProgramData\TS-Solution\tscam\log"
 
-      REM 밀리초 단위 삭제
-      REM %NSSM% set tscam AppEnvironment TSCAM_NO_MILLISECONDS=1
+     REM 밀리초 단위 삭제
+     REM %NSSM% set tscam AppEnvironment TSCAM_NO_MILLISECONDS=1
 
-      REM 저장 이미지 파일 다운로드 경로 prefix
-      REM %NSSM% set tscam AppEnvironment TSCAM_URI_DATA_PATH_PREFIX=/site1"
+     REM 저장 이미지 파일 다운로드 경로 prefix
+     REM %NSSM% set tscam AppEnvironment TSCAM_URI_DATA_PATH_PREFIX=/site1"
 
-      REM 콘솔 로그 레벨 (info, warn, error)
-      REM 운영 환경에서는 쓰기 부하를 줄이려면 warm, error 수순으로 설정합니다.
-      REM %NSSM% set tscam AppEnvironment TSCAM_LOG_LEVEL_CONSOLE=error
+     REM 콘솔 로그 레벨 (info, warn, error)
+     REM 운영 환경에서는 쓰기 부하를 줄이려면 warm, error 수순으로 설정합니다.
+     REM %NSSM% set tscam AppEnvironment TSCAM_LOG_LEVEL_CONSOLE=error
 
-      REM 파일 로그 레벨 (info, warn, error)
-      REM 운영 환경에서는 쓰기 부하를 줄이려면 warm, error 수순으로 설정합니다.
-      REM %NSSM% set tscam AppEnvironment TSCAM_LOG_LEVEL_FILE=error
+     REM 파일 로그 레벨 (info, warn, error)
+     REM 운영 환경에서는 쓰기 부하를 줄이려면 warm, error 수순으로 설정합니다.
+     REM %NSSM% set tscam AppEnvironment TSCAM_LOG_LEVEL_FILE=error
 
-      REM 로그 파일 설정 (따옴표 두개로 이스케이프 처리)
-      REM maxSize: 로그 파일 하나의 최대 크기
-      REM maxFiles: 보관할 로그 파일 수 (지정한 날짜가 지나면 자동 삭제됨)
-      REM size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)  
-      REM %NSSM% set tscam AppEnvironment "TSCAM_LOG_CONFIG={""maxSize"":""20m"",""maxFiles"":""31d"",""size"":""1024m""}"
+     REM 로그 파일 설정 (따옴표 두개로 이스케이프 처리)
+     REM maxSize: 로그 파일 하나의 최대 크기
+     REM maxFiles: 보관할 로그 파일 수 (지정한 날짜가 지나면 자동 삭제됨)
+     REM size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)
+     REM %NSSM% set tscam AppEnvironment "TSCAM_LOG_CONFIG={""maxSize"":""20m"",""maxFiles"":""31d"",""size"":""1024m""}"
 
-      REM 차번인식엔진이 tscam.exe와 다른 위치에 있는 경우 설정합니다.
-      REM %NSSM% set tscam AppEnvironment "TSANPR=C:\Program Files\TS-Solution\TS-ANPR\tsanpr-KR-v2.4.0M\windows-x86_64\tsanpr.dll"
+     REM 차번인식엔진이 tscam.exe와 다른 위치에 있는 경우 설정합니다.
+     REM %NSSM% set tscam AppEnvironment "TSANPR=C:\Program Files\TS-Solution\TS-ANPR\tsanpr-KR-v2.4.0M\windows-x86_64\tsanpr.dll"
 
-      %NSSM% start tscam
-      %NSSM% status tscam
+     %NSSM% start tscam
+     %NSSM% status tscam
 
-      ```
+     ```
 
-      수정한 `addsvc.bat` 파일을 저장한 다음 관리자 모드에서 실행하면 등록이 완료됩니다.
+     수정한 `addsvc.bat` 파일을 저장한 다음 관리자 모드에서 실행하면 등록이 완료됩니다.
 
    - 서비스 삭제
-      등록한 `tscam` 서비스를 삭제하려면 관리자 모드에서 `utils/windows-service/rmsvc.bat`를 실행하세요.
+     등록한 `tscam` 서비스를 삭제하려면 관리자 모드에서 `utils/windows-service/rmsvc.bat`를 실행하세요.
 
 5. 운영환경 (리눅스)
+
    - 서비스 등록
-   시스템 서비스로 등록하기 위해 `utils/linux-service/addsvc.sh` 파일 내용 중 필요한 부분을 수정합니다.
-   예를 들어, `/var/tsanpr/`에 복사했다면 아래와 같이 수정하면 됩니다.
+     시스템 서비스로 등록하기 위해 `utils/linux-service/addsvc.sh` 파일 내용 중 필요한 부분을 수정합니다.
+     예를 들어, `/var/tsanpr/`에 복사했다면 아래와 같이 수정하면 됩니다.
 
    ```sh
    #!/bin/bash
@@ -275,7 +286,7 @@ linkStyle 4 stroke:green, stroke-width:4px;
    # 로그 파일 설정
    # 	maxSize: 로그 파일 하나의 최대 크기
    # 	maxFiles: 보관할 로그 파일 수 (지정한 날짜가 지나면 자동 삭제됨)
-   # 	size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)  
+   # 	size: 전체 로그 저장소의 최대 크기 (총 로그 크기가 설정한 값을 초과하면 가장 오래된 파일부터 삭제됨)
    # Environment=\"TSCAM_LOG_CONFIG={\\\"maxSize\\\":\\\"20m\\\",\\\"maxFiles\\\":\\\"31d\\\",\\\"size\\\":\\\"1024m\\\"}\"
 
    # 차번인식엔진이 tscam.exe와 다른 위치에 있는 경우 설정합니다.
@@ -287,7 +298,7 @@ linkStyle 4 stroke:green, stroke-width:4px;
    # tscam 실행 파일 경로
    ExecStart=/var/tsanpr/tsanpr-KR-v2.4.0M/linux-x86_64/tscam
 
-   # 죽으면 3초 후 자동 재시작 
+   # 죽으면 3초 후 자동 재시작
    Restart=always
    RestartSec=3
    LimitNOFILE=400000
@@ -302,10 +313,9 @@ linkStyle 4 stroke:green, stroke-width:4px;
    sudo systemctl enable tscam
    sudo systemctl restart tscam
    ```
-   
-   - 서비스 삭제
-      등록한 `tscam` 서비스를 삭제하려면 관리자 모드에서 `utils/linux-service/rmsvc.sh`를 실행하세요.
 
+   - 서비스 삭제
+     등록한 `tscam` 서비스를 삭제하려면 관리자 모드에서 `utils/linux-service/rmsvc.sh`를 실행하세요.
 
 ## 라이선스
 
@@ -313,7 +323,7 @@ linkStyle 4 stroke:green, stroke-width:4px;
 다만 `TS-ANPR`이 설치되어 있어야 동작하며 `TS-ANPR` 라이선스에 의존합니다.
 `TS-ANPR`은 동시에 이벤트 수신 대기 `watchEvent` 하는 최대 카메라 수를 라이선스로 제한하고 있습니다.
 
-| TS-ANPR 라이선스 | 카메라 수 제한
-|-----------------|:---------------
-| 무료 평가판      | 최대 4대
-| 상용 라이선스    | 기본 1대 (카메라 추가시 라이선스 구매 가능)
+| TS-ANPR 라이선스 | 카메라 수 제한                              |
+| ---------------- | :------------------------------------------ |
+| 무료 평가판      | 최대 4대                                    |
+| 상용 라이선스    | 기본 1대 (카메라 추가시 라이선스 구매 가능) |
