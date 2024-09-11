@@ -2,16 +2,40 @@
 
 TS-CAM은 ONVIF 호환 CCTV 카메라를 차량 번호 인식 용으로 사용할 수 있는 프레임워크입니다.
 
-루프 센서 입력, 스냅샷 이미지 획득, 차량 번호 인식, 차단기 제어, 이미지 저장 기능이 모두 구현되어 있습니다.
+---
 
-카메라와 응용프로그램 사이에서 중계자 역할을 수행하는 서버(브로커)로 동작하며, 응용 프로그램과는 Socket.IO 기반 API를 사용하여 실시간 메시지로 가볍게 통신합니다.
+#### [😍 차번 인식 라이브 데모](http://tsnvr.ipdisk.co.kr/) <span style="font-size:.7em;font-weight:normal;color:grey">👈 여기서 번호 인식 성능을 테스트해 보세요.</span>
 
-응용 프로그램 예제 코드를 확인해 보세요.
+#### [🚀 최신 엔진 다운로드](https://github.com/bobhyun/TS-ANPR/releases/) <span style="font-size:.7em;font-weight:normal;color:grey">👈 TS-CAM은 최신 엔진에 포함되어 있습니다.</span>
+
+#### [💻 TS-CAM 응용 프로그램 개발 가이드](DevGuide.md)
+
+#### [💻 TS-ANPR 응용 프로그램 개발 가이드](https://github.com/bobhyun/TS-ANPR/blob/main/DevGuide.md) 
+
+---
+
+## 목차
+  - [예제 코드](#예제-코드)
+  - [개요](#개요)
+  - [특장점](#특장점)
+  - [설치 및 실행 방법](#설치-및-실행-방법)
+  - [라이선스](#라이선스)
+
+---
+
+## 예제 코드
+프로그래밍 언어별 응용 프로그램 예제 코드를 확인해 보세요.
 
 - [Python](https://github.com/bobhyun/TS-CAM/blob/main/examples/python/tscamApp.py)
 - [Java](https://github.com/bobhyun/TS-CAM/blob/main/examples/java/tscamApp/src/Main.java)
 - [C#](https://github.com/bobhyun/TS-CAM/blob/main/examples/csharp/tscamApp/tscamApp/Program.cs)
 - [Node.js](https://github.com/bobhyun/TS-CAM/blob/main/examples/nodejs/index.js)
+
+
+## 개요
+루프 센서 입력, 스냅샷 이미지 획득, 차량 번호 인식, 차단기 제어, 이미지 저장 기능이 모두 구현되어 있습니다.
+
+카메라와 응용프로그램 사이에서 중계자 역할을 수행하는 서버(브로커)로 동작하며, 응용 프로그램과는 Socket.IO 기반 API를 사용하여 실시간 메시지로 가볍게 통신합니다.
 
 ```mermaid
 ---
