@@ -26,7 +26,7 @@ TS-CAM is a framework that enables ONVIF-compatible CCTV cameras to be used for 
 
 ##### [🎁 How to install](Usage.md)
 
-##### [⚖️ License](#LICENSE.md)
+##### [⚖️ License](LICENSE.md)
 
 _If you have any questions or requests, please feel free to open an [Issues](https://github.com/bobhyun/TS-ANPR/issues).
 We are happy to assist and welcome your feedback!_

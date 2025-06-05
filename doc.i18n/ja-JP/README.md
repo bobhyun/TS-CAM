@@ -26,7 +26,7 @@ TS-CAMは、ONVIF対応CCTVカメラを車両ナンバー認識に活用でき�
 
 ##### [🎁 インストール方法](Usage.md)
 
-##### [⚖️ ライセンス](#LICENSE.md)
+##### [⚖️ ライセンス](LICENSE.md)
 
 _ご質問やご要望がございましたら、お気軽に[Issues](https://github.com/bobhyun/TS-ANPR/issues)をオープンしてください。
 喜んでお手伝いさせていただき、皆様のフィードバックをお待ちしております！_

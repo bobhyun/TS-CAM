@@ -26,7 +26,7 @@ TS-CAM은 ONVIF 호환 CCTV 카메라를 차량번호 인식에 활용할 수 �
 
 ##### [🎁 설치 방법](Usage.md)
 
-##### [⚖️ 라이선스](#LICENSE.md)
+##### [⚖️ 라이선스](LICENSE.md)
 
 _문의사항이나 요청사항이 있으시면 언제든 [Issues](https://github.com/bobhyun/TS-ANPR/issues)를 열어주세요.
 기꺼이 도와드리고 여러분의 피드백을 환영합니다!_

@@ -26,7 +26,7 @@ TS-CAM là một framework cho phép sử dụng camera CCTV tương thích ONVI
 
 ##### [🎁 Cách Cài Đặt](Usage.md)
 
-##### [⚖️ Giấy Phép](#LICENSE.md)
+##### [⚖️ Giấy Phép](LICENSE.md)
 
 _Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu nào, vui lòng tạo [Issues](https://github.com/bobhyun/TS-ANPR/issues).
 Chúng tôi rất vui được hỗ trợ và chào đón phản hồi của bạn!_
