@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+application {
+    mainClass = 'com.example.tscam.Main'
+    
+    run {
+        classpath = sourceSets.main.runtimeClasspath
+        workingDir = projectDir
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.socket:socket.io-client:2.1.1'
+    implementation 'org.json:json:20240303'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    
+    compileJava {
+        doFirst {
+            println "Compiling Java sources..."
+        }
+        
+        options.encoding = 'UTF-8'
+        options.compilerArgs += [
+            '-Xlint:all',
+            '-parameters'
+        ]
+    }
+}
+
+run {
+    standardInput = System.in
+}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# tscam 서비스 삭제 스크립트
+# tscam Service Removal Script
 
 sudo systemctl stop tscam.service
 sudo systemctl disable tscam.service

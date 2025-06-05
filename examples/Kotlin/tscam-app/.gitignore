@@ -1,0 +1,20 @@
+# Kotlin
+*.ktc
+*.kotlin_metadata
+*.kotlin_module
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
