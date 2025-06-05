@@ -171,3 +171,353 @@ When loading a snapshot image, it supports image file storage, web image links, 
     - `anprOptions`: These are the [options](https://github.com/bobhyun/TS-ANPR/blob/main/DevGuide.md#12-anpr_read_file) (`v,m,s,d,r`) passed to the license plate recognition engine.
        If you want to perform number recognition without using option characters, set `"anprOptions": ""`,
        If you do not want to use the vehicle number recognition feature, you can omit the `anprOptions` item.
+
+  - Response Data
+    ```jsx
+    {
+      "href": "http://192.168.0.30/onvif/device_service",
+      "alias": "Parking Entrance",
+      "result": true,
+      "anpr": [       // License plate recognition results when using anprOptions
+        {
+          "area": {
+            "angle": 0.93,
+            "height": 60,
+            "width": 192,
+            "x": 1038,
+            "y": 522
+          },
+          "attrs": {
+            "ev": false
+          },
+          "conf": {
+            "ocr": 0.9533,
+            "plate": 0.8595
+          },
+          "elapsed": 0.02,
+          "ev": false,
+          "text": "864고2097"
+        }
+      ],
+      "snapshot": {
+        "timestamp": "2024-08-12T11:31:31.027+09:00", // Image creation time (ISO 8601 format)
+        "filePath": "C:\\Program Data\\TS-Solution\\TS-CAM\\data\\20240812\\ParkingEntrance\\ParkingEntrance-20240812-113131.027_864고2097.jpg", // Image storage path
+        "uri": "http://127.0.0.1:10000/data/20240812/ParkingEntrance/ParkingEntrance-20240812-113131.027_864고2097.jpg" // Image link
+      }
+    }
+    ```
+
+#### 4. `relayOutput` Relay Output
+Controls relay output.
+Relay output targets one camera at a time, so there are no license restrictions like maximum number of cameras.
+
+```mermaid
+---
+title: "[Parking Barrier Control with Relay Output]"
+---
+flowchart LR
+
+app(Application)-->|relayOutput|tscam("TS-CAM")
+tscam-->cam1(Camera #1)
+tscam-->cam2(Camera #2)
+cam1-->|Relay output terminal|gate("Parking Barrier")
+```
+
+- Request Parameters
+  ```jsx
+  {
+    "href": "http://192.168.0.30/onvif/device_service", // Target camera
+    "alias": "Parking Entrance",  // Name assignment
+    "username": "admin",   // Camera login ID
+    "password": "admin",   // Camera login password
+    "authType": "basic",   // Authentication type
+    "portNo": 0,           // Relay output terminal number
+    "value": 1             // Output value
+  }
+  ```
+  - `portNo`: Port number starts from 0 and defaults to 0 if not specified.
+  - `value`: 0 (`off`) or 1 (`on`). If the camera is configured to automatically output 0 shortly after outputting 1, outputting 0 from the application may have no effect.
+
+- Response Data
+  ```jsx
+  {
+    "href": "http://192.168.0.30/onvif/device_service",
+    "alias": "Parking Entrance",
+    "result": true,
+    "message": "Relay output value for port 0 successfully set to 1."
+  }
+  ```
+
+#### 5. `watchEvents` Event Waiting
+Sets up event reception when trigger input (digital input) occurs from cameras.
+Event waiting is a feature that can receive events simultaneously from multiple cameras as shown in the diagram below.
+The maximum number of cameras that can be monitored simultaneously follows the `TS-ANPR` license.
+
+```mermaid
+---
+title: "[Configuration for Monitoring Multiple Cameras Simultaneously]"
+---
+flowchart LR
+
+cam1(Camera #1)-->tscam("TS-CAM<br/>(watchEvent)")
+cam2(Camera #2)-->tscam
+cam3("Camera #3<br/>has two input terminals")-->tscam
+tscam==>|@event|app(Application)
+loop1(Loop Coil #1)-->|Digital input 0|cam1
+loop2(Loop Coil #2)-->|Digital input 0|cam2
+loop3(Loop Coil #3)-->|Digital input 0|cam3
+loop4(Loop Coil #4)-->|Digital input 1|cam3
+```
+<br/>
+
+  - Request Parameters
+    The `watchEvents` request uses an array to represent multiple cameras.
+    You can specify that `TS-CAM` should perform a series of processes such as receiving snapshot images and recognizing license plate numbers when an event occurs.
+    ```jsx
+    [
+        {
+        "href": "http://192.168.0.30/onvif/device_service", // Target camera
+        "alias": "Parking Entrance",  // Name assignment
+        "username": "admin",   // Camera login ID
+        "password": "admin",   // Camera login password
+        "authType": "basic",   // Authentication type
+        "anprOptions": "v"     // TS-ANPR license plate recognition options
+        },
+        {
+        "href": "http://192.168.0.31/onvif/device_service", // Target camera
+        "alias": "Parking Exit",  // Name assignment
+        "username": "admin",   // Camera login ID
+        "password": "admin",   // Camera login password
+        "authType": "basic",   // Authentication type
+        "snapshot": true       // TS-ANPR license plate recognition options
+        },
+
+        // ... omitted
+    ]
+    ```
+  - `anprOptions`: Specifies to receive license plate recognition results by getting a snapshot image when an event occurs.
+  - `snapshot`: Gets a snapshot image when an event occurs.
+  If neither `anprOptions` nor `snapshot` is set, only event input data is received.
+
+  - Response Data
+    The response data includes responses from the target cameras in the `watchList` that are waiting for events. If `result` is `true` for each camera, it means it has been successfully set to event waiting status.
+    ```jsx
+    {
+        "result": true, // Processing result
+        "watchList": [
+        {
+            "href": "http://192.168.0.30/onvif/device_service",
+            "alias": "Parking Entrance",
+            "result": true, // Camera response
+            "message": "Successfully subscribed to the events"
+        },
+        {
+            "href": "http://192.168.0.31/onvif/device_service",
+            "alias": "Parking Exit",
+            "result": true, // Camera response
+            "message": "Successfully subscribed to the events"
+        },
+        
+        // ... omitted
+        ]
+    }
+    ```
+
+#### 6. `unwatchEvents` Event Waiting Termination
+Terminates event waiting.
+
+  - Request Parameters
+    Construct an array of cameras for which you want to terminate event monitoring.
+    ```jsx
+    [
+        {
+        "href": "http://192.168.0.30/onvif/device_service", // Target camera
+        "alias": "Parking Entrance",  // Name assignment
+        "username": "admin",   // Camera login ID
+        "password": "admin",   // Camera login password
+        "authType": "basic"    // Authentication type
+        }
+
+        // ... omitted
+    ]
+    ```
+
+  - Response Data
+    ```jsx
+    {
+      "result": true,
+      "unwatchList": [
+        {
+          "href": "http://192.168.0.30/onvif/device_service",
+          "alias": "Parking Entrance",
+          "result": true,
+          "message": "Successfully unsubscribed from the events"
+        },
+
+        // ... omitted
+      ]
+    }
+    ```
+
+#### 7. `watchList` Event Waiting List
+`watchEvents` and `unwatchEvents` requests can be made all at once or in multiple separate requests.
+Therefore, use this `watchList` request to check which cameras are currently in event waiting status.
+
+  - Request Parameters
+    Since there are no parameters, put `null` in the parameter position.
+
+  - Response Data
+    ```jsx
+    {
+      "result": true,
+      "watchList": [
+        {
+          "href": "http://192.168.0.30/onvif/device_service",
+          "alias": "Parking Entrance",
+          "since": "2024-08-12T14:27:18.000+09:00"  // Event waiting start time
+        },
+
+        // ... omitted
+      ]
+    }
+    ```
+
+#### 8. `@event` Event
+When an event occurs from a camera in event waiting status, you receive an `@event`.
+Unlike other messages, this is not in request and response format, and the `@` character is prefixed to indicate it's a reverse message from `TS-CAM` to the application.
+
+  - Event Data
+     If `anprOptions` was specified when calling `watchEvents`, snapshot images and license plate recognition results are included as shown below.
+    ```jsx
+    {
+      "href": "http://192.168.0.30/onvif/device_service",
+      "alias": "Parking Entrance",
+      "events": [   // Array notation to handle multiple simultaneous events 
+        {
+          "timestamp": "2024-08-12T14:29:56.779+09:00",  // Event occurrence time
+          "type": "digitalInput",  // Event type (digital input)
+          "portNo": 1,             // Digital input port          
+          "value": 1,              // Value
+          "snapshot": {            // Snapshot image
+            "timestamp": "2024-08-12T14:29:56.985+09:00",
+            "filePath": "D:\\tmp\\tscam\\data\\20240812\\ParkingEntrance\\ParkingEntrance-20240812-142956.985_864고2097.jpg",
+            "uri": "http://127.0.0.1:10000/data/20240812/ParkingEntrance/ParkingEntrance-20240812-142956.985_864고2097.jpg"
+          },
+          "anpr": [                // License plate recognition results
+            {
+              "area": {
+                "angle": 0.927,
+                "height": 51,
+                "width": 216,
+                "x": 1011,
+                "y": 525
+              },
+              "attrs": {
+                "ev": false
+              },
+              "conf": {
+                "ocr": 0.958,
+                "plate": 0.8966
+              },
+              "elapsed": 0.0545,
+              "ev": false,
+              "text": "864고2097"
+            }
+          ]
+        }
+      ]
+    }
+    ```
+    To implement a feature that determines visitor vehicle numbers and opens parking barriers, when receiving an `@event` message, you can query the `anpr.text` in the database and send a `relayOutput` request to open the barrier if it matches the conditions.
+
+    Note that when multiple applications are connected to one `TS-ANPR`, when an event occurs, the `@event` message is broadcast to all applications simultaneously.
+    
+    ```mermaid
+    ---
+    title: "[Event Broadcasting When Multiple Applications are Connected]"
+    ---
+    flowchart LR
+
+    loop1(Loop Coil #1)-->|Digital input 0|cam1
+    cam1(Camera #1)-->tscam("TS-CAM<br/>(watchEvent)")
+    tscam==>|@event|app1(Application #1)
+    tscam==>|@event|app2(Application #2)
+    tscam==>|@event|app3(Application #3)
+    tscam==>|@event|app4(Application #4)
+    app1-->|relayOutput|tscam
+    app2-->|Image Analysis|app2
+    app3-->|Image Upload|storage[(Mass Storage)]
+    app4-->|API|Payment
+    app1<-->db[(Database)]
+    ```
+
+    Using this event broadcasting structure, you can divide the functions of each application into a microservice architecture as shown in the diagram above.
+
+## License Plate Recognition API
+For application development convenience, a license plate recognition API is provided.
+As shown below, upload an image file to the `TS-CAM` server to receive license plate recognition results.
+```mermaid
+flowchart LR
+
+app(Application)-->|POST /read<br/>Image File|tscam((TS-CAM))
+tscam-->|License Plate Recognition Results|app
+```
+The image uploaded to the server is deleted from memory buffer after license plate recognition and is not stored separately.
+
+- Endpoint: **POST /read**
+
+- Parameters:
+  - `options`: [License plate recognition options (`vmsdr`)](https://github.com/bobhyun/TS-ANPR/blob/main/DevGuide.md#12-anpr_read_file)
+
+- Request Body:
+  - `Content-Type: multipart/form-data`
+  - `image`: Image file to analyze (required)
+
+- Response:
+  - `200 OK`: Success
+    - Response Body:
+      - `Content-Type: application/json`
+      - [License plate recognition results](https://github.com/bobhyun/TS-ANPR/blob/main/DevGuide.md#213-json) or [Object recognition results](https://github.com/bobhyun/TS-ANPR/blob/main/DevGuide.md#222-json) according to specified `options`
+  - `400 Bad Request`: Invalid request
+  - `500 Internal Server Error`: Server error
+
+- Example
+  - Request
+    ```http
+    POST http://127.0.0.1/read?options=v
+    Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+    ------WebKitFormBoundary7MA4YWxkTrZu0gW
+    Content-Disposition: form-data; name="image"; filename="car.jpg"
+    Content-Type: image/jpeg
+
+    (Binary data of the image file)
+    ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+    ```
+  - Response
+    ```json
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "area": {
+            "angle": 1.4943,
+            "height": 63,
+            "width": 200,
+            "x": 1988,
+            "y": 569
+        },
+        "attrs": {
+            "ev": false
+        },
+        "conf": {
+            "ocr": 0.9357,
+            "plate": 0.8767
+        },
+        "elapsed": 0.0268,
+        "ev": false,
+        "text": "123가5678"
+      }
+    ]
+    ```

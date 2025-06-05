@@ -259,9 +259,9 @@ title: "[동시에 여러 카메라를 이벤트 수신 대기하는 구성]"
 ---
 flowchart LR
 
-cam1(Camera #1)-->tscam("TS-CAM</br>(watchEvent)")
+cam1(Camera #1)-->tscam("TS-CAM<br/>(watchEvent)")
 cam2(Camera #2)-->tscam
-cam3("Camera #3</br>입력단자가 두 개")-->tscam
+cam3("Camera #3<br/>입력단자가 두 개")-->tscam
 tscam==>|@event|app(응용프로그램)
 loop1(루프코일 #1)-->|Digital input 0|cam1
 loop2(루프코일 #2)-->|Digital input 0|cam2
@@ -439,7 +439,7 @@ loop4(루프코일 #4)-->|Digital input 1|cam3
     flowchart LR
 
     loop1(루프코일 #1)-->|Digital input 0|cam1
-    cam1(Camera #1)-->tscam("TS-CAM</br>(watchEvent)")
+    cam1(Camera #1)-->tscam("TS-CAM<br/>(watchEvent)")
     tscam==>|@event|app1(응용프로그램 #1)
     tscam==>|@event|app2(응용프로그램 #2)
     tscam==>|@event|app3(응용프로그램 #3)
@@ -459,7 +459,7 @@ loop4(루프코일 #4)-->|Digital input 1|cam3
 ```mermaid
 flowchart LR
 
-app(응용 프로그램)-->|POST /read\n이미지 파일|tscam((TS-CAM))
+app(응용 프로그램)-->|POST /read<br/>이미지 파일|tscam((TS-CAM))
 tscam-->|차번 인식 결과|app
 ```
 서버 측에 업로드된 이미지는 차번 인식 후 메모리 버퍼에서 삭제되며 별도로 저장하지 않습니다.
