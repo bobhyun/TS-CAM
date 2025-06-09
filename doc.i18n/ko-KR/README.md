@@ -8,7 +8,6 @@ TS-CAM은 ONVIF 호환 CCTV 카메라를 차량번호 인식에 활용할 수 �
 
 ##### [😍 TS-ANPR 라이브 데모](http://tsnvr.ipdisk.co.kr/) <span style="font-size:.7em;font-weight:normal;color:grey">👈 여기서 차량번호 인식 성능을 테스트해보세요.</span>
 
-
 ##### 🚀 최신 버전 다운로드
 
 - [TS-CAM](https://github.com/bobhyun/TS-CAM/releases/)
@@ -17,7 +16,6 @@ TS-CAM은 ONVIF 호환 CCTV 카메라를 차량번호 인식에 활용할 수 �
 ##### 🎨 주요 프로그래밍 언어별 예제 코드
 
 - [C#](../../examples/C%23/tscam-app) | [F#](../../examples/F%23/tscam-app) | [Java](../../examples/Java/tscam-app) | [JavaScript](../../examples/JavaScript/tscam-app) | [Kotlin](../../examples/Kotlin/tscam-app) | [Python](../../examples/Python/tscam-app) | [TypeScript](../../examples/TypeScript/tscam-app) | [VB.NET](../../examples/VB.NET/tscam-app)
-
 
 ##### 📖 응용 프로그램 개발 가이드
 
@@ -28,7 +26,7 @@ TS-CAM은 ONVIF 호환 CCTV 카메라를 차량번호 인식에 활용할 수 �
 
 ##### [⚖️ 라이선스](LICENSE.md)
 
-_문의사항이나 요청사항이 있으시면 언제든 [Issues](https://github.com/bobhyun/TS-ANPR/issues)를 열어주세요.
+_문의사항이나 요청사항이 있으시면 언제든 [Issues](https://github.com/bobhyun/TS-CAM/issues)를 열어주세요.
 기꺼이 도와드리고 여러분의 피드백을 환영합니다!_
 
 - 문의: 📧 skju3922@naver.com
@@ -36,6 +34,7 @@ _문의사항이나 요청사항이 있으시면 언제든 [Issues](https://gith
 ---
 
 ## 목차
+
 - [최신 버전 정보](#최신-버전-정보)
 - [개요](#개요)
 - [특징](#특징)
@@ -45,11 +44,13 @@ _문의사항이나 요청사항이 있으시면 언제든 [Issues](https://gith
 ## 최신 버전 정보
 
 #### Release v0.2.1 (2025.6.4)🎉
-   - `TS-CAM`이 `TS-ANPR`에서 분리되었습니다.
-   - 자체 서명된 인증서를 사용하는 HTTPS 카메라 지원
-   - TS-ANPR v3.0.0에서 추가된 `minChar`, `country` 및 `symbol` 지원
+
+- `TS-CAM`이 `TS-ANPR`에서 분리되었습니다.
+- 자체 서명된 인증서를 사용하는 HTTPS 카메라 지원
+- TS-ANPR v3.0.0에서 추가된 `minChar`, `country` 및 `symbol` 지원
 
 ## 개요
+
 루프 센서 입력, 스냅샷 이미지 획득, 차량번호 인식, 차단기 제어, 이미지 저장 기능이 모두 구현되어 있습니다.
 
 카메라와 응용 프로그램 사이를 중재하는 서버(브로커) 역할을 하며, Socket.IO 기반의 경량 API를 통해 응용 프로그램과 실시간 메시지로 통신합니다.

@@ -8,7 +8,6 @@ TS-CAM is a framework that enables ONVIF-compatible CCTV cameras to be used for 
 
 ##### [😍 TS-ANPR Live Demo](http://tsnvr.ipdisk.co.kr/) <span style="font-size:.7em;font-weight:normal;color:grey">👈 Test number plate recognition performance here.</span>
 
-
 ##### 🚀 Download Latest Versions
 
 - [TS-CAM](https://github.com/bobhyun/TS-CAM/releases/)
@@ -17,7 +16,6 @@ TS-CAM is a framework that enables ONVIF-compatible CCTV cameras to be used for 
 ##### 🎨 Code Samples in Popular Languages
 
 - [C#](examples/C%23/tscam-app) | [F#](examples/F%23/tscam-app) | [Java](examples/Java/tscam-app) | [JavaScript](examples/JavaScript/tscam-app) | [Kotlin](examples/Kotlin/tscam-app) [Python](examples/Python/tscam-app) | [TypeScript](examples/TypeScript/tscam-app) | [VB.NET](examples/VB.NET/tscam-app)
-
 
 ##### 📖 Application Development Guide
 
@@ -28,7 +26,7 @@ TS-CAM is a framework that enables ONVIF-compatible CCTV cameras to be used for 
 
 ##### [⚖️ License](LICENSE.md)
 
-_If you have any questions or requests, please feel free to open an [Issues](https://github.com/bobhyun/TS-ANPR/issues).
+_If you have any questions or requests, please feel free to open an [Issues](https://github.com/bobhyun/TS-CAM/issues).
 We are happy to assist and welcome your feedback!_
 
 - Inquiry: 📧 skju3922@naver.com
@@ -36,6 +34,7 @@ We are happy to assist and welcome your feedback!_
 ---
 
 ## Table of Contents
+
 - [Latest Version Information](#latest-version-information)
 - [Overview](#overview)
 - [Features](#features)
@@ -45,11 +44,13 @@ We are happy to assist and welcome your feedback!_
 ## Latest Version Information
 
 #### Release v0.2.1 (2025.6.4)🎉
-   - `TS-CAM` has been separated from `TS-ANPR`.
-   - Support for HTTPS cameras using self-signed certificates
-   - Support for `minChar`, `country` a and `symbol` added in TS-ANPR v3.0.0
+
+- `TS-CAM` has been separated from `TS-ANPR`.
+- Support for HTTPS cameras using self-signed certificates
+- Support for `minChar`, `country` a and `symbol` added in TS-ANPR v3.0.0
 
 ## Overview
+
 Loop sensor input, snapshot image acquisition, vehicle number recognition, barrier control, and image storage functions are all implemented.
 
 It acts as a server (broker) that mediates between the camera and the application, and communicates with the application through a lightweight Socket.IO-based API in real-time messages.

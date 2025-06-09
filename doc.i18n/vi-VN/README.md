@@ -8,7 +8,6 @@ TS-CAM là một framework cho phép sử dụng camera CCTV tương thích ONVI
 
 ##### [😍 TS-ANPR Demo Trực Tiếp](http://tsnvr.ipdisk.co.kr/) <span style="font-size:.7em;font-weight:normal;color:grey">👈 Kiểm tra hiệu suất nhận dạng biển số tại đây.</span>
 
-
 ##### 🚀 Tải Phiên Bản Mới Nhất
 
 - [TS-CAM](https://github.com/bobhyun/TS-CAM/releases/)
@@ -17,7 +16,6 @@ TS-CAM là một framework cho phép sử dụng camera CCTV tương thích ONVI
 ##### 🎨 Mã Nguồn Mẫu Bằng Các Ngôn Ngữ Phổ Biến
 
 - [C#](../../examples/C%23/tscam-app) | [F#](../../examples/F%23/tscam-app) | [Java](../../examples/Java/tscam-app) | [JavaScript](../../examples/JavaScript/tscam-app) | [Kotlin](../../examples/Kotlin/tscam-app) | [Python](../../examples/Python/tscam-app) | [TypeScript](../../examples/TypeScript/tscam-app) | [VB.NET](../../examples/VB.NET/tscam-app)
-
 
 ##### 📖 Hướng Dẫn Phát Triển Ứng Dụng
 
@@ -28,7 +26,7 @@ TS-CAM là một framework cho phép sử dụng camera CCTV tương thích ONVI
 
 ##### [⚖️ Giấy Phép](LICENSE.md)
 
-_Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu nào, vui lòng tạo [Issues](https://github.com/bobhyun/TS-ANPR/issues).
+_Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu nào, vui lòng tạo [Issues](https://github.com/bobhyun/TS-CAM/issues).
 Chúng tôi rất vui được hỗ trợ và chào đón phản hồi của bạn!_
 
 - Liên hệ: 📧 skju3922@naver.com
@@ -36,6 +34,7 @@ Chúng tôi rất vui được hỗ trợ và chào đón phản hồi của b�
 ---
 
 ## Mục Lục
+
 - [Thông Tin Phiên Bản Mới Nhất](#thông-tin-phiên-bản-mới-nhất)
 - [Tổng Quan](#tổng-quan)
 - [Tính Năng](#tính-năng)
@@ -45,11 +44,13 @@ Chúng tôi rất vui được hỗ trợ và chào đón phản hồi của b�
 ## Thông Tin Phiên Bản Mới Nhất
 
 #### Release v0.2.1 (2025.6.4)🎉
-   - `TS-CAM` đã được tách ra khỏi `TS-ANPR`.
-   - Hỗ trợ camera HTTPS sử dụng chứng chỉ tự ký
-   - Hỗ trợ `minChar`, `country` và `symbol` được thêm vào trong TS-ANPR v3.0.0
+
+- `TS-CAM` đã được tách ra khỏi `TS-ANPR`.
+- Hỗ trợ camera HTTPS sử dụng chứng chỉ tự ký
+- Hỗ trợ `minChar`, `country` và `symbol` được thêm vào trong TS-ANPR v3.0.0
 
 ## Tổng Quan
+
 Tất cả các chức năng đầu vào cảm biến vòng từ, chụp ảnh, nhận dạng biển số xe, điều khiển barrier và lưu trữ hình ảnh đều được triển khai.
 
 Nó hoạt động như một máy chủ (broker) trung gian giữa camera và ứng dụng, và giao tiếp với ứng dụng thông qua API nhẹ dựa trên Socket.IO bằng tin nhắn thời gian thực.
