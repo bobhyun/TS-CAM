@@ -15,7 +15,7 @@ TS-CAM is a framework that enables ONVIF-compatible CCTV cameras to be used for 
 
 ##### 🎨 Code Samples in Popular Languages
 
-- [C#](examples/C%23/tscam-app) | [F#](examples/F%23/tscam-app) | [Java](examples/Java/tscam-app) | [JavaScript](examples/JavaScript/tscam-app) | [Kotlin](examples/Kotlin/tscam-app) [Python](examples/Python/tscam-app) | [TypeScript](examples/TypeScript/tscam-app) | [VB.NET](examples/VB.NET/tscam-app)
+- [C#](examples/C%23/tscam-app) | [F#](examples/F%23/tscam-app) | [Java](examples/Java/tscam-app) | [JavaScript](examples/JavaScript/tscam-app) | [Kotlin](examples/Kotlin/tscam-app) | [Python](examples/Python/tscam-app) | [TypeScript](examples/TypeScript/tscam-app) | [VB.NET](examples/VB.NET/tscam-app)
 
 ##### 📖 Application Development Guide
 
